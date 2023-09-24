@@ -24,7 +24,7 @@ build: ##> builds the project
 
 .PHONY: run
 run: ##> runs the project
-	./build/ExampleApp
+	./build/TrafficLightControllerApp
 
 .PHONY: clean
 clean: ##> removes the build files
@@ -35,9 +35,9 @@ clean: ##> removes the build files
 test: ##> runs the unit tests
 	./build/bin/unit_tests --gtest_shuffle
 
-.PHONY: format
-format: ##> formats the code
-	find include test -iname '*.h' -o -iname '*.cpp' | xargs clang-format -i
+#.PHONY: format
+#format: ##> formats the code
+#	find inc test src -iname '*.hpp' -o -iname '*.cpp' | xargs clang-format -i
 
 .PHONY: docker-run
 docker-run: ##> pulls and runs the docker container for dev and test
