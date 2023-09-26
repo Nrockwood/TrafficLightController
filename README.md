@@ -40,6 +40,39 @@ The controller is optimized in multiple ways:
 ```
 **Note**: Markdown structure generated via tree command. [See tree man page for help](https://linux.die.net/man/1/tree)
 
+## Design Validation
+
+1. Cycle Pattern is validated by using a std::array of [TrafficLightState](https://github.com/Nrockwood/TrafficLightController/blob/main/inc/impl/app/TrafficLightControllerApp.hpp#L12-L23) in the [TrafflicLightControllerApp](https://github.com/Nrockwood/TrafficLightController/blob/main/inc/impl/app/TrafficLightControllerApp.hpp#L1).
+
+   [Each call of TrafflicLightControllerApp::run() iterates over this array and may advance to the next pattern.](https://github.com/Nrockwood/TrafficLightController/blob/main/src/app/TrafficLightControllerApp.cpp#L49)
+
+   The pattern cycle advances if one of these cases is true:
+     - [cars are waiting at red light && light minimum active time has been hit](https://github.com/Nrockwood/TrafficLightController/blob/main/src/app/TrafficLightControllerApp.cpp#L72)
+     - [opposing lanes are clear](https://github.com/Nrockwood/TrafficLightController/blob/main/src/app/TrafficLightControllerApp.cpp#L84)
+     - [light maximum active time has been hit](https://github.com/Nrockwood/TrafficLightController/blob/main/src/app/TrafficLightControllerApp.cpp#L77)
+
+2. Clear opposing lanes processing is validated by ensuring each [SensorState is CLEAR](https://github.com/Nrockwood/TrafficLightController/blob/main/inc/impl/simulator/simulator.hpp#L36). [The cycle pattern does not advance if this is true.](https://github.com/Nrockwood/TrafficLightController/blob/main/src/app/TrafficLightControllerApp.cpp#L62)
+
+3. [Scenario 1](https://github.com/Nrockwood/TrafficLightController/blob/main/src/main.cpp#L11) validates the TrafficLightController cycles through each pattern as expected.
+   Since cars are waiting in other lanes, the mimimum light active time is enforced.
+   - [See scenario 1 output](https://github.com/Nrockwood/TrafficLightController/wiki/Scenario-1-Output)
+
+5. [Scenario 2](https://github.com/Nrockwood/TrafficLightController/blob/main/src/main.cpp#L17) validates the TrafficLightController does not enforce minimum and maximum
+   light active times if opposing lanes are clear for the car trying to proceed.
+   - [See scenario 2 output](https://github.com/Nrockwood/TrafficLightController/wiki/Scenario-2-output)
+
+7. [Scenario 3](https://github.com/Nrockwood/TrafficLightController/blob/main/src/main.cpp#L24) and [Scenario 4](https://github.com/Nrockwood/TrafficLightController/blob/main/src/main.cpp#L32) both validate the TrafficLightController may switch between enforcing minimum and maximum
+   light active times and allowing a car to always proceed with clear opposing lanes.
+   - [See scenario 3 output](https://github.com/Nrockwood/TrafficLightController/wiki/Scenario-3-output)
+   - [See scenario 4 output](https://github.com/Nrockwood/TrafficLightController/wiki/Scenario-4-output)
+
+## Continous Intergration (CI) Jobs
+
+These jobs can be executed instead of cloning repo, building and testing locally.
+  - [Building the TrafficLightController application.](https://github.com/Nrockwood/TrafficLightController/actions/runs/6306790318/job/17122461295)
+  - [Running the TrafficLightController application.](https://github.com/Nrockwood/TrafficLightController/actions/runs/6306790318/job/17122461171)
+  - [Testing the TrafficLightController application.](https://github.com/Nrockwood/TrafficLightController/actions/runs/6306790318/job/17122461463)
+
 ## Getting Started
 
 ### Add SSH Keys
@@ -109,9 +142,9 @@ make
 
 ## Special Thanks
 
-Loft Orbital, thank you for your review and consideration!
+Loft Orbital and Loft Federal, thank you for your review and consideration!!
 
-[![Loft Orbital](images/loft_orbital.png)](https://www.loftorbital.com/)
+[![Loft Orbital Loft Federal](images/loft_orbital.png)](https://www.loftorbital.com/)
 
 ## Future Modifications
 
