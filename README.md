@@ -40,7 +40,7 @@ The controller is optimized in multiple ways:
 ```
 **Note**: Markdown structure generated via tree command. [See tree man page for help](https://linux.die.net/man/1/tree)
 
-## Design Validiation
+## Design Validation
 
 1. Cycle Pattern is validated by using a std::array of [TrafficLightState](https://github.com/Nrockwood/TrafficLightController/blob/main/inc/impl/app/TrafficLightControllerApp.hpp#L12-L23) in the [TrafflicLightControllerApp](https://github.com/Nrockwood/TrafficLightController/blob/main/inc/impl/app/TrafficLightControllerApp.hpp#L1).
 
